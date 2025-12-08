@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 380px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #4a8fff;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .input-row button {
+            padding: 10px 15px;
+            background: #4a8fff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .input-row button:hover {
+            background: #2b6be6;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            background: #eef3ff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .done {
+            text-decoration: line-through;
+            background: #d8ffd8;
+        }
+
+        .btns button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .done-btn {
+            background: #28a745;
+        }
+
+        .del-btn {
+            background: #e63946;
+        }
+
+        .clear-btn {
+            width: 100%;
+            padding: 10px;
+            background: #e63946;
+            border: none;
+            color: white;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .clear-btn:hover {
+            background: #c4182a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Django To-Do App</h2>
+
+    <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Add a task...">
+        <button onclick="addTask()">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <button class="clear-btn" onclick="clearAll()">Clear All</button>
+</div>
+
+<script>
+    function addTask() {
+        let taskInput = document.getElementById("taskInput");
+        let task = taskInput.value.trim();
+
+        if (task === "") return alert("Please enter a task!");
+
+        let li = document.createElement("li");
+        li.innerHTML = `
+            <span>${task}</span>
+            <div class="btns">
+                <button class="done-btn" onclick="markDone(this)">Done</button>
+                <button class="del-btn" onclick="deleteTask(this)">X</button>
+            </div>
+        `;
+
+        document.getElementById("taskList").appendChild(li);
+
+        taskInput.value = "";
+    }
+
+    function markDone(btn) {
+        let li = btn.parentElement.parentElement;
+        li.classList.toggle("done");
+    }
+
+    function deleteTask(btn) {
+        btn.parentElement.parentElement.remove();
+    }
+
+    function clearAll() {
+        document.getElementById("taskList").innerHTML = "";
+    }
+</script>
+</body>
+</html>
+
