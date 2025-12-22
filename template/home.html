@@ -1,164 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simple To-Do List</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO LIST - Home</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f6ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            width: 380px;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .input-row input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #4a8fff;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        .input-row button {
-            padding: 10px 15px;
-            background: #4a8fff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .input-row button:hover {
-            background: #2b6be6;
-        }
-
-        ul {
-            margin-top: 20px;
-            padding: 0;
-            list-style: none;
-        }
-
-        li {
-            background: #eef3ff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .done {
-            text-decoration: line-through;
-            background: #d8ffd8;
-        }
-
-        .btns button {
-            padding: 6px 10px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            color: white;
-            margin-left: 5px;
-        }
-
-        .done-btn {
-            background: #28a745;
-        }
-
-        .del-btn {
-            background: #e63946;
-        }
-
-        .clear-btn {
-            width: 100%;
-            padding: 10px;
-            background: #e63946;
-            border: none;
-            color: white;
-            margin-top: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .clear-btn:hover {
-            background: #c4182a;
-        }
+        .form-control{
+        padding: 1.375rem .75rem !important;
+    }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>Django To-Do App</h2>
-
-    <div class="input-row">
-        <input type="text" id="taskInput" placeholder="Add a task...">
-        <button onclick="addTask()">Add</button>
-    </div>
-
-    <ul id="taskList"></ul>
-
-    <button class="clear-btn" onclick="clearAll()">Clear All</button>
-</div>
-
-<script>
-    function addTask() {
-        let taskInput = document.getElementById("taskInput");
-        let task = taskInput.value.trim();
-
-        if (task === "") return alert("Please enter a task!");
-
-        let li = document.createElement("li");
-        li.innerHTML = `
-            <span>${task}</span>
-            <div class="btns">
-                <button class="done-btn" onclick="markDone(this)">Done</button>
-                <button class="del-btn" onclick="deleteTask(this)">X</button>
+    <div class="container">
+        <h3 class="pt-5 text-center">Django ToDo App</h3>
+        <div class="row">
+            <h4>My Day</h4>
+            <p class="text-muted">{% now "jS F Y" %}</p>
+            <div class="col-md-7 col-lg-7" style="height: 450px; overflow: scroll;">
+                <!-- List of all the tasks for the day -->
+                 {% for i in tasks %}
+                <div class="card m-1">
+                    <div class="card-body">
+                    {{i.task}}
+                        <span style="position: relative; float: right;">
+                            <a href="{% url 'mark_as_done' i.pk %}" class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
+                            <a href="{% url 'delete_task' i.pk %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                            <a href="{% url 'edit_task' i.pk %}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-        `;
-
-        document.getElementById("taskList").appendChild(li);
-
-        taskInput.value = "";
-    }
-
-    function markDone(btn) {
-        let li = btn.parentElement.parentElement;
-        li.classList.toggle("done");
-    }
-
-    function deleteTask(btn) {
-        btn.parentElement.parentElement.remove();
-    }
-
-    function clearAll() {
-        document.getElementById("taskList").innerHTML = "";
-    }
-</script>
+            <div class="col-md-5 col-lg-5">
+                <h5>Completed Tasks</h5>
+                <!-- List of all the tasks that have completed -->
+                {% for i in completed_tasks %}
+                <div class="card m-1">
+                    <div class="card-body">
+                        {{i.task}}
+                        <span style="position: relative; float: right;">
+                        <a href="{% url 'mark_as_undone' i.pk %}" class="btn btn-danger"><i class="fa fa-times"></i> Mark as UnDone</a>
+                        </span>
+                    </div>
+                </div>
+                    {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
+                <!-- To Do Form -->
+                <form action="{% url 'addTask' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <span style="display: flex;">
+                            <input  type="text" name="task" class="form-control" placeholder="Add a task">
+                            <button type="submit" class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-
