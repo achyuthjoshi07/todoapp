@@ -2,6 +2,7 @@
 
 A simple Todo List web application built with Django that allows users to create, update, and delete tasks.
 
+https://github.com/achyuthjoshi07/todoapp/blob/f211dd063e875034ef3e5195cb94e2db70444456/OP.png
 🚀 Features
 -> Add new tasks
 -> View all tasks
@@ -60,6 +61,7 @@ python manage.py runserver
 ```
 
 Open your browser and visit:
+
 
 http://127.0.0.1:8000/
 📸 Application Workflow
